@@ -9,25 +9,27 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import org.apache.commons.io.FileUtils;
+import com.activeandroid.ActiveAndroid;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ArrayList<String> items;
     ArrayAdapter<String> itemsAdapter;
+    List<Item> todolist;
     ListView lvItems;
     private final int REQUEST_CODE = 101;
+    private int NEW_WRITE = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvItems = (ListView) findViewById(R.id.lvItems);
         items = new ArrayList<>();
+        ActiveAndroid.initialize(this);
         readItems();
-        itemsAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
     }
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
             if (pos >= 0) {
                 items.set(pos, itemText);
                 itemsAdapter.notifyDataSetChanged();
-                writeItems();
+                writeItem(pos, itemText);
             }
 
         }
@@ -51,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         if (!itemText.trim().isEmpty()) {
             itemsAdapter.add(itemText.trim());
             etNewItem.setText("");
-            writeItems();
+            writeItem(NEW_WRITE, itemText.trim());
         }
     }
 
@@ -63,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
                                                    View item, int pos, long id) {
                         items.remove(pos);
                         itemsAdapter.notifyDataSetChanged();
-                        writeItems();
+                        removeItem(pos);
                         return true;
                     }
                 });
@@ -82,23 +84,29 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            items = new ArrayList<String>(FileUtils.readLines(todoFile));
-        } catch (IOException e) {
-            items = new ArrayList<String>();
+        todolist = Item.getAll();
+        for (int i = 0; i < todolist.size(); i++) {
+            Item entry = todolist.get(i);
+            items.add(entry.itemName);
         }
     }
 
-    private void writeItems() {
-        File filesDir = getFilesDir();
-        File todoFile = new File(filesDir, "todo.txt");
-        try {
-            FileUtils.writeLines(todoFile, items);
-        } catch (IOException e) {
-            e.printStackTrace();
+    private void writeItem(int index, String itemText) {
+        Item dbItem;
+        if (index == NEW_WRITE) {
+            dbItem = new Item();
+        } else {
+            dbItem = todolist.get(index);
         }
+        dbItem.itemName = itemText;
+        dbItem.save();
+        todolist = Item.getAll();
+    }
+
+    private void removeItem(int index) {
+        Item dbItem = Item.load(Item.class, todolist.get(index).getId());
+        dbItem.delete();
+        todolist = Item.getAll();
     }
 
 }
