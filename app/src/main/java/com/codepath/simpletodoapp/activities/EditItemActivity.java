@@ -1,10 +1,12 @@
-package com.codepath.simpletodoapp;
+package com.codepath.simpletodoapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
+
+import com.codepath.simpletodoapp.R;
 
 public class EditItemActivity extends AppCompatActivity {
     int changeIndex = -1;
@@ -16,9 +18,6 @@ public class EditItemActivity extends AppCompatActivity {
         String initText = getIntent().getStringExtra("field_text");
         int curPos = initText.length();
 
-        if (initText == null) {
-            initText = "";
-        }
         EditText etEditItem = (EditText) findViewById(R.id.etEditItem);
         etEditItem.setText(initText);
         etEditItem.setSelection(curPos);

@@ -1,23 +1,23 @@
-package com.codepath.simpletodoapp;
+package com.codepath.simpletodoapp.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
 
 import com.activeandroid.ActiveAndroid;
+import com.codepath.simpletodoapp.R;
+import com.codepath.simpletodoapp.adapters.ItemsAdapter;
+import com.codepath.simpletodoapp.models.Item;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-    ArrayList<String> items;
-    ArrayAdapter<String> itemsAdapter;
-    List<Item> todolist;
+    ArrayList<Item> items;
+    ItemsAdapter itemsAdapter;
     ListView lvItems;
     private final int REQUEST_CODE = 101;
     private int NEW_WRITE = -1;
@@ -26,10 +26,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         lvItems = (ListView) findViewById(R.id.lvItems);
-        items = new ArrayList<>();
         ActiveAndroid.initialize(this);
         readItems();
-        itemsAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, items);
+        itemsAdapter = new ItemsAdapter (this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
     }
@@ -40,9 +39,9 @@ public class MainActivity extends AppCompatActivity {
             String itemText = data.getExtras().getString("field_text");
             int pos = data.getExtras().getInt("position", -1);
             if (pos >= 0) {
-                items.set(pos, itemText);
-                itemsAdapter.notifyDataSetChanged();
+                items.get(pos).itemName = itemText;
                 writeItem(pos, itemText);
+                itemsAdapter.notifyDataSetChanged();
             }
 
         }
@@ -51,9 +50,9 @@ public class MainActivity extends AppCompatActivity {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
         if (!itemText.trim().isEmpty()) {
-            itemsAdapter.add(itemText.trim());
-            etNewItem.setText("");
             writeItem(NEW_WRITE, itemText.trim());
+            itemsAdapter.notifyDataSetChanged();
+            etNewItem.setText("");
         }
     }
 
@@ -63,9 +62,8 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public boolean onItemLongClick(AdapterView<?> adapter,
                                                    View item, int pos, long id) {
-                        items.remove(pos);
-                        itemsAdapter.notifyDataSetChanged();
                         removeItem(pos);
+                        itemsAdapter.notifyDataSetChanged();
                         return true;
                     }
                 });
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         Intent i = new Intent(MainActivity.this, EditItemActivity.class);
                         if (items.size() > 0) {
                             i.putExtra("position", pos);
-                            i.putExtra("field_text", items.get(pos));
+                            i.putExtra("field_text", items.get(pos).itemName);
                             startActivityForResult(i, REQUEST_CODE);
                         }
                     }
@@ -84,11 +82,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void readItems() {
-        todolist = Item.getAll();
-        for (int i = 0; i < todolist.size(); i++) {
-            Item entry = todolist.get(i);
-            items.add(entry.itemName);
-        }
+        items = new ArrayList<>(Item.getAll());
     }
 
     private void writeItem(int index, String itemText) {
@@ -96,17 +90,21 @@ public class MainActivity extends AppCompatActivity {
         if (index == NEW_WRITE) {
             dbItem = new Item();
         } else {
-            dbItem = todolist.get(index);
+            dbItem = items.get(index);
         }
         dbItem.itemName = itemText;
         dbItem.save();
-        todolist = Item.getAll();
+        reloadItems();
     }
 
     private void removeItem(int index) {
-        Item dbItem = Item.load(Item.class, todolist.get(index).getId());
+        Item dbItem = Item.load(Item.class, items.get(index).getId());
         dbItem.delete();
-        todolist = Item.getAll();
+        reloadItems();
     }
 
+    private void reloadItems() {
+        items.clear();
+        items.addAll(Item.getAll());
+    }
 }
