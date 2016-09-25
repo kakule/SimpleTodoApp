@@ -26,10 +26,12 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.adapter_item, parent, false);
         }
         // Lookup view for data population
-        TextView tvName = (TextView) convertView.findViewById(R.id.tvListItem);
+        TextView tvName = (TextView) convertView.findViewById(R.id.tvListItemName);
+        TextView tvPriority = (TextView) convertView.findViewById(R.id.tvSpText);
         //TextView tvHome = (TextView) convertView.findViewById(R.id.tvHome);
         // Populate the data into the template view using the data object
         tvName.setText(item.itemName);
+        tvPriority.setText(("Priority: " + item.itemPriority));
         //tvHome.setText(user.hometown);
         // Return the completed view to render on screen
         return convertView;

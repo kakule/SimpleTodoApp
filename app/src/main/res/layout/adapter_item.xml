@@ -1,7 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/tvListItem"
-        android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:padding="10dp"
+    android:id="@+id/sa">
+
+    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/tvListItemName"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceListItem"
         android:gravity="center_vertical"
@@ -10,4 +16,17 @@
         android:paddingRight="?android:attr/listPreferredItemPaddingRight"
         android:paddingEnd="?android:attr/listPreferredItemPaddingEnd"
         android:minHeight="?android:attr/listPreferredItemHeight"
+        android:textSize="20sp"
         android:text="ListItem" />
+
+    <TextView
+        android:id="@+id/tvSpText"
+        android:layout_alignBaseline="@+id/tvListItemName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="SpinnerText"/>
+
+</RelativeLayout>

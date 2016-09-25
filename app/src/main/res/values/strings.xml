@@ -1,4 +1,10 @@
 <resources>
     <string name="app_name">SimpleTodoApp</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
+    <string name="priority_prompt">Choose Priority</string>
+    <string-array name="priorities">
+        <item>LOW</item>
+        <item>MEDIUM</item>
+        <item>HIGH</item>
+    </string-array>
 </resources>

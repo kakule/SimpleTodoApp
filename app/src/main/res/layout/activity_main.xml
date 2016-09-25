@@ -26,8 +26,8 @@
         android:layout_alignBottom="@+id/btnAddItem"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_toLeftOf="@+id/btnAddItem"
-        android:layout_toStartOf="@+id/btnAddItem"
+        android:layout_toStartOf="@+id/spinner"
+        android:layout_toLeftOf="@+id/spinner"
         android:inputType="text"
         android:hint="Enter a new item" />
 
@@ -35,8 +35,38 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/lvItems"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_above="@+id/btnAddItem"
+        android:layout_below="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        style="?android:listSeparatorTextViewStyle"
+        android:text="Stuff To Do List Below"
+        android:textSize="30sp"
+        android:id="@+id/textView"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnAddItem" />
+        android:layout_alignRight="@+id/btnAddItem"
+        android:layout_alignEnd="@+id/btnAddItem"
+        android:gravity="center_vertical|center_horizontal"
+        android:textColor="#264fd7" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinner"
+        android:layout_alignBottom="@+id/btnAddItem"
+        android:layout_alignTop="@+id/etNewItem"
+        android:layout_toLeftOf="@+id/btnAddItem"
+        android:layout_toStartOf="@+id/btnAddItem"
+        android:spinnerMode="dropdown"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:prompt="@string/priority_prompt"
+        android:entries="@array/priorities"/>
 </RelativeLayout>

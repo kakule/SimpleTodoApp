@@ -17,7 +17,6 @@ public class EditItemActivity extends AppCompatActivity {
         changeIndex = getIntent().getIntExtra("position", -1);
         String initText = getIntent().getStringExtra("field_text");
         int curPos = initText.length();
-
         EditText etEditItem = (EditText) findViewById(R.id.etEditItem);
         etEditItem.setText(initText);
         etEditItem.setSelection(curPos);

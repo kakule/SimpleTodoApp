@@ -5,8 +5,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.activeandroid.ActiveAndroid;
 import com.codepath.simpletodoapp.R;
@@ -19,6 +21,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayList<Item> items;
     ItemsAdapter itemsAdapter;
     ListView lvItems;
+    Spinner spSpinnerItem;
     private final int REQUEST_CODE = 101;
     private int NEW_WRITE = -1;
     @Override
@@ -31,6 +34,12 @@ public class MainActivity extends AppCompatActivity {
         itemsAdapter = new ItemsAdapter (this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
+
+        spSpinnerItem = (Spinner) findViewById(R.id.spinner);
+        ArrayAdapter<CharSequence> spAdapter = ArrayAdapter.createFromResource(this,
+                R.array.priorities, android.R.layout.simple_spinner_item);
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spSpinnerItem.setAdapter(spAdapter);
     }
 
     @Override
@@ -40,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
             int pos = data.getExtras().getInt("position", -1);
             if (pos >= 0) {
                 items.get(pos).itemName = itemText;
-                writeItem(pos, itemText);
+                writeItem(pos, itemText, null);
                 itemsAdapter.notifyDataSetChanged();
             }
 
@@ -49,8 +58,9 @@ public class MainActivity extends AppCompatActivity {
     public void onAddItem(View v) {
         EditText etNewItem = (EditText) findViewById(R.id.etNewItem);
         String itemText = etNewItem.getText().toString();
+        String spinnerSelection = (String) spSpinnerItem.getSelectedItem();
         if (!itemText.trim().isEmpty()) {
-            writeItem(NEW_WRITE, itemText.trim());
+            writeItem(NEW_WRITE, itemText.trim(), spinnerSelection);
             itemsAdapter.notifyDataSetChanged();
             etNewItem.setText("");
         }
@@ -85,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         items = new ArrayList<>(Item.getAll());
     }
 
-    private void writeItem(int index, String itemText) {
+    private void writeItem(int index, String itemText, String spinnerText) {
         Item dbItem;
         if (index == NEW_WRITE) {
             dbItem = new Item();
@@ -93,6 +103,9 @@ public class MainActivity extends AppCompatActivity {
             dbItem = items.get(index);
         }
         dbItem.itemName = itemText;
+        if (spinnerText != null) {
+            dbItem.itemPriority = spinnerText;
+        }
         dbItem.save();
         reloadItems();
     }
