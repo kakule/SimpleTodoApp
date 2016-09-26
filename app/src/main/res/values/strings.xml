@@ -2,9 +2,12 @@
     <string name="app_name">SimpleTodoApp</string>
     <string name="title_activity_edit_item">EditItemActivity</string>
     <string name="priority_prompt">Choose Priority</string>
+    <string name="low_priority">LOW</string>
+    <string name="medium_priority">MEDIUM</string>
+    <string name="high_priority">HIGH</string>
     <string-array name="priorities">
-        <item>LOW</item>
-        <item>MEDIUM</item>
-        <item>HIGH</item>
+        <item>@string/low_priority</item>
+        <item>@string/medium_priority</item>
+        <item>@string/high_priority</item>
     </string-array>
 </resources>
