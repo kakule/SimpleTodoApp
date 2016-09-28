@@ -2,7 +2,6 @@ package com.codepath.simpletodoapp.activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -23,7 +22,8 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements
+        EditEntryDialogFragment.EditEntryFragListener{
     ArrayList<Item> items;
     ItemsAdapter itemsAdapter;
     ListView lvItems;
@@ -51,16 +51,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE) {
-            String itemText = data.getExtras().getString("field_text");
-            int pos = data.getExtras().getInt("position", -1);
-            if (pos >= 0) {
-                items.get(pos).itemName = itemText;
-                writeItem(pos, itemText, null);
-                itemsAdapter.notifyDataSetChanged();
-            }
-
+    public void onSaveEditEntry(String itemText, int listIndex) {
+        if (listIndex >= 0) {
+            items.get(listIndex).itemName = itemText;
+            writeItem(listIndex, itemText, null);
+            itemsAdapter.notifyDataSetChanged();
         }
     }
 
@@ -122,11 +117,12 @@ public class MainActivity extends AppCompatActivity {
                 new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapter, View item, int pos, long id) {
-                        Intent i = new Intent(MainActivity.this, EditItemActivity.class);
+                        EditEntryDialogFragment editEntryFrag;
                         if (items.size() > 0) {
-                            i.putExtra("position", pos);
-                            i.putExtra("field_text", items.get(pos).itemName);
-                            startActivityForResult(i, REQUEST_CODE);
+                            //i.putExtra("position", pos);
+                            editEntryFrag = EditEntryDialogFragment.
+                                    newInstance(items.get(pos).itemName, pos);
+                            editEntryFrag.show(getSupportFragmentManager(),"fragment_edit_entries");
                         }
                     }
                 });
