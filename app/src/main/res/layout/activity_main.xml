@@ -38,24 +38,41 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_above="@+id/btnAddItem"
-        android:layout_below="@+id/textView" />
+        android:layout_below="@+id/mainheader" />
 
-    <TextView
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        style="?android:listSeparatorTextViewStyle"
-        android:text="Stuff To Do List Below"
-        android:textSize="30sp"
-        android:id="@+id/textView"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignRight="@+id/btnAddItem"
-        android:layout_alignEnd="@+id/btnAddItem"
-        android:gravity="center_vertical|center_horizontal"
-        android:textColor="#264fd7" />
-
+        android:id="@+id/mainheader">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="Task"
+            android:padding="10dp"
+            android:textSize="30sp"
+            android:id="@+id/textView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_toStartOf="@+id/tvdateView"
+            android:layout_toLeftOf="@+id/tvdateView"
+            android:textColor="#264fd7" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            style="?android:listSeparatorTextViewStyle"
+            android:text="Complete by"
+            android:padding="16dp"
+            android:textSize="20sp"
+            android:id="@+id/tvdateView"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignBottom="@+id/textView"
+            android:textColor="#264fd7" />
+    </RelativeLayout>
     <Spinner
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -67,8 +84,18 @@
         android:spinnerMode="dropdown"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:text="Set Priority"
+        android:text="Add Priority"
         android:entries="@array/priorities"/>
+
+    <Button
+    android:id="@+id/btnTime"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignBottom="@+id/btnAddItem"
+    android:layout_alignTop="@+id/etNewItem"
+    android:layout_toLeftOf="@+id/btnAddItem"
+    android:layout_toStartOf="@+id/btnAddItem"
+    android:text="Time" />
 
     <Button
         android:id="@+id/btnDate"
@@ -76,8 +103,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/btnAddItem"
         android:layout_alignTop="@+id/etNewItem"
-        android:layout_toLeftOf="@+id/btnAddItem"
-        android:layout_toStartOf="@+id/btnAddItem"
-        android:onClick="onSetDate"
-        android:text="Set Due Date" />
+        android:layout_toLeftOf="@+id/btnTime"
+        android:layout_toStartOf="@+id/btnTime"
+        android:text="Day" />
 </RelativeLayout>
