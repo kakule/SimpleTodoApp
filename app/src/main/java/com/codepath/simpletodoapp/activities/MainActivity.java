@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.activeandroid.ActiveAndroid;
 import com.codepath.simpletodoapp.R;
@@ -19,6 +21,8 @@ public class MainActivity extends AppCompatActivity implements
     ArrayList<Item> items;
     ItemsAdapter itemsAdapter;
     ListView lvItems;
+    Spinner spSortBy;
+    ArrayAdapter<CharSequence> spAdapter;
     private int NEW_WRITE = -1;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +35,11 @@ public class MainActivity extends AppCompatActivity implements
         itemsAdapter = new ItemsAdapter (this, items);
         lvItems.setAdapter(itemsAdapter);
         setupListViewListener();
+        spSortBy= (Spinner) findViewById(R.id.spSort);
+        spAdapter = ArrayAdapter.createFromResource(this, R.array.sort_by,
+                R.layout.sort_spinner_item);
+        spAdapter.setDropDownViewResource(R.layout.sort_spinner_dropdown_item);
+        spSortBy.setAdapter(spAdapter);
 
     }
 
@@ -46,7 +55,7 @@ public class MainActivity extends AppCompatActivity implements
 
     public void onAddItem(View v) {
         EditEntryDialogFragment newEntryFrag = EditEntryDialogFragment.
-                 newInstance(null, Calendar.getInstance(), "MEDIUM", NEW_WRITE);
+                 newInstance(null, null, "MEDIUM", NEW_WRITE);
         newEntryFrag.show(getSupportFragmentManager(),"fragment_edit_entries");
     }
 

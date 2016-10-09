@@ -25,7 +25,10 @@ public class TimeEntryFragment extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         // Use the current time as the default values for the picker
-        final Calendar c = (Calendar)getArguments().getSerializable("initTime");
+        Calendar c = (Calendar)getArguments().getSerializable("initTime");
+        if (c == null) {
+            c = Calendar.getInstance();
+        }
         int hour = c.get(Calendar.HOUR_OF_DAY);
         int minute = c.get(Calendar.MINUTE);
 

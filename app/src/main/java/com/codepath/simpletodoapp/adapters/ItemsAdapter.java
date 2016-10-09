@@ -15,7 +15,6 @@ import com.codepath.simpletodoapp.models.Item;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 public class ItemsAdapter extends ArrayAdapter<Item> {
@@ -37,11 +36,13 @@ public class ItemsAdapter extends ArrayAdapter<Item> {
         TextView tvDateNotification = (TextView) convertView.findViewById(R.id.tvDueSoon);
         ImageView ivPriorityColor = (ImageView) convertView.findViewById(R.id.ivPriorityColor);
         // Populate the data into the template view using the data object
-        Date itemDate = new Date();
+        Calendar itemDate = item.itemDueDate;
         SimpleDateFormat datetimeFormat = new SimpleDateFormat("MM/dd/yy, hh:mm a");
         tvName.setText(item.itemName);
-        tvDueDate.setText(datetimeFormat.format(item.itemDueDate.getTime()));
-        setNotification(item.itemDueDate, tvDateNotification);
+        if (itemDate != null) {
+            tvDueDate.setText(datetimeFormat.format(itemDate.getTime()));
+            setNotification(item.itemDueDate, tvDateNotification);
+        }
         ivPriorityColor.setBackgroundColor(setPriorityColor(item.itemPriority));
         // Return the completed view to render on screen
         return convertView;

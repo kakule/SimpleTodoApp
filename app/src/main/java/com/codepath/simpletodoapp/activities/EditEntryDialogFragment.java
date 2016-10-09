@@ -2,9 +2,12 @@ package com.codepath.simpletodoapp.activities;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
+import android.util.Log;
 import android.view.Display;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -12,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -24,6 +29,8 @@ import com.codepath.simpletodoapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+
+import static android.widget.AdapterView.OnItemSelectedListener;
 
 
 public class EditEntryDialogFragment extends DialogFragment {
@@ -69,6 +76,7 @@ public class EditEntryDialogFragment extends DialogFragment {
         tvFragHead  = (TextView) dialogView.findViewById(R.id.txtFragMsg);
         spFragPriority = (Spinner) dialogView.findViewById(R.id.spFragPriority);
         etFragEditText = (EditText) dialogView.findViewById(R.id.etFragEditItem);
+        c = (Calendar) getArguments().getSerializable("itemDate");
         String initText = getArguments().getString("itemText", "");
         String spText = getArguments().getString("itemPriority", "");
         if (initText.isEmpty()) {
@@ -76,6 +84,7 @@ public class EditEntryDialogFragment extends DialogFragment {
             etFragEditText.setHint(R.string.new_hint);
             btnFragDate.setText(R.string.add_date);
             btnFragTime.setText(R.string.add_time);
+            btnFragTime.setEnabled(false);
         } else {
             tvFragHead.setText(R.string.edit_item);
             etFragEditText.setText(initText);
@@ -83,6 +92,7 @@ public class EditEntryDialogFragment extends DialogFragment {
             btnFragTime.setText(R.string.edit_time);
         }
         etFragEditText.setSelection(initText.length());
+        etFragEditText.setOnFocusChangeListener(focusListener);
         btnFragDate.setOnClickListener(dateOnclickListener);
         btnFragTime.setOnClickListener(timeOnclickListener);
         btnFragSave.setOnClickListener(saveOnclickListener);
@@ -94,6 +104,7 @@ public class EditEntryDialogFragment extends DialogFragment {
             int position = spAdapter.getPosition(spText);
             spFragPriority.setSelection(position);
         }
+        setPriorityListener();
         return dialogView;
     }
 
@@ -130,6 +141,7 @@ public class EditEntryDialogFragment extends DialogFragment {
              c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
              SimpleDateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
              btnFragDate.setText(dateFormat.format(c.getTime()));
+             btnFragTime.setEnabled(true);
          }
     };
 
@@ -169,6 +181,49 @@ public class EditEntryDialogFragment extends DialogFragment {
         // Call super onResume after sizing
         super.onResume();
 
+    }
+
+    private void setPriorityListener() {
+
+        spFragPriority.setOnItemSelectedListener(
+                new OnItemSelectedListener() {
+                    public void onItemSelected(
+                            AdapterView<?> parent, View view, int position, long id) {
+                        ((TextView) parent.getChildAt(0)).setTextColor(
+                                getColor((String) parent.getItemAtPosition(position)));
+                    }
+
+                    public void onNothingSelected(AdapterView<?> parent) {
+                    }
+
+                });
+
+    }
+
+    private View.OnFocusChangeListener focusListener = new View.OnFocusChangeListener() {
+        @Override
+        public void onFocusChange(View v, boolean hasFocus) {
+            Log.d("simpletodo", "onFocusChange called");
+            InputMethodManager imm = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (hasFocus) {
+                Log.d("simpletodo", "hasFocus entered");
+                imm.showSoftInput(getView(), InputMethodManager.SHOW_IMPLICIT);
+            } else {
+                Log.d("simpletodo", "does not has Focus entered");
+                imm.showSoftInput(getView(), InputMethodManager.SHOW_IMPLICIT);
+            }
+        }
+        };
+
+    private int getColor(String priority) {
+        int spColor = Color.YELLOW;
+
+        if (priority.equals("LOW")) {
+            spColor = Color.GREEN;
+        } else if (priority.equals("HIGH")){
+            spColor = Color.RED;
+        }
+        return spColor;
     }
 
     

@@ -12,9 +12,15 @@
     <string name="add_time">Add time</string>
     <string name="edit_date">Edit date</string>
     <string name="edit_time">Edit time</string>
+    <string name="view_by">view by</string>
     <string-array name="priorities">
         <item>@string/low_priority</item>
         <item>@string/medium_priority</item>
         <item>@string/high_priority</item>
+    </string-array>
+    <string-array name="sort_by">
+        <item>list</item>
+        <item>date</item>
+        <item>priority</item>
     </string-array>
 </resources>

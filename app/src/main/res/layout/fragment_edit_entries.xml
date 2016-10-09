@@ -8,6 +8,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:focusableInTouchMode="true"
     android:layout_gravity="center">
 
     <TextView
@@ -17,6 +18,7 @@
         android:layout_alignParentTop="true"
         android:text="Edit Item Below:"
         android:layout_marginTop="2dp"
+        android:textColor="#264fd7"
         android:id="@+id/txtFragMsg" />
 
     <EditText
@@ -25,7 +27,9 @@
         android:inputType="textMultiLine"
         android:ems="10"
         android:id="@+id/etFragEditItem"
-        android:layout_marginTop="5dp" />
+        android:layout_marginTop="5dp"
+        android:focusable="true"
+        android:focusableInTouchMode="true" />
 
     <LinearLayout
         android:orientation="horizontal"
@@ -46,18 +50,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit Date"
+            android:textColor="#264fd7"
             android:id="@+id/btnFragDate" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Edit Time"
+            android:textColor="#264fd7"
             android:id="@+id/btnFragTime" />
 
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Save"
+            android:textColor="#264fd7"
             android:id="@+id/btnFragSave" />
     </LinearLayout>
 
