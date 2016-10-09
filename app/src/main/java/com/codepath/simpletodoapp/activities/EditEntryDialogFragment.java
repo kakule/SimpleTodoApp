@@ -12,9 +12,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.codepath.simpletodoapp.R;
@@ -27,12 +30,15 @@ public class EditEntryDialogFragment extends DialogFragment {
     Button btnFragSave;
     Button btnFragDate;
     Button btnFragTime;
+    TextView tvFragHead;
     EditText etFragEditText;
+    Spinner spFragPriority;
+    ArrayAdapter<CharSequence> spAdapter;
     Calendar c = null;
 
 
     public interface EditEntryFragListener {
-        void onSaveEditEntry(String resultText, Calendar resultDate, int index);
+        void onSaveEditEntry(String resultText, Calendar resultDate, String priority, int index);
     }
 
     public EditEntryDialogFragment () {
@@ -45,6 +51,7 @@ public class EditEntryDialogFragment extends DialogFragment {
         Bundle args = new Bundle();
         args.putString("itemText", itemText);
         args.putSerializable("itemDate", itemDate);
+        args.putString("itemPriority", itemPriority);
         args.putInt("index", index);
         itemFrag.setArguments(args);
 
@@ -59,13 +66,34 @@ public class EditEntryDialogFragment extends DialogFragment {
         btnFragSave = (Button) dialogView.findViewById(R.id.btnFragSave);
         btnFragDate = (Button) dialogView.findViewById(R.id.btnFragDate);
         btnFragTime = (Button) dialogView.findViewById(R.id.btnFragTime);
+        tvFragHead  = (TextView) dialogView.findViewById(R.id.txtFragMsg);
+        spFragPriority = (Spinner) dialogView.findViewById(R.id.spFragPriority);
         etFragEditText = (EditText) dialogView.findViewById(R.id.etFragEditItem);
-        String initText = getArguments().getString("itemText","Enter Text");
-        etFragEditText.setText(initText);
+        String initText = getArguments().getString("itemText", "");
+        String spText = getArguments().getString("itemPriority", "");
+        if (initText.isEmpty()) {
+            tvFragHead.setText(R.string.add_item);
+            etFragEditText.setHint(R.string.new_hint);
+            btnFragDate.setText(R.string.add_date);
+            btnFragTime.setText(R.string.add_time);
+        } else {
+            tvFragHead.setText(R.string.edit_item);
+            etFragEditText.setText(initText);
+            btnFragDate.setText(R.string.edit_date);
+            btnFragTime.setText(R.string.edit_time);
+        }
         etFragEditText.setSelection(initText.length());
         btnFragDate.setOnClickListener(dateOnclickListener);
         btnFragTime.setOnClickListener(timeOnclickListener);
         btnFragSave.setOnClickListener(saveOnclickListener);
+        spAdapter = ArrayAdapter.createFromResource(this.getActivity(),
+                R.array.priorities, android.R.layout.simple_spinner_item);
+        spAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spFragPriority.setAdapter(spAdapter);
+        if (!spText.isEmpty()) {
+            int position = spAdapter.getPosition(spText);
+            spFragPriority.setSelection(position);
+        }
         return dialogView;
     }
 
@@ -74,8 +102,9 @@ public class EditEntryDialogFragment extends DialogFragment {
         public void onClick(View v) {
             String itemText = etFragEditText.getText().toString().trim();
             if (!itemText.isEmpty()) {
+                String spSelect = (String) spFragPriority.getSelectedItem();
                 EditEntryFragListener listener = (EditEntryFragListener) getActivity();
-                listener.onSaveEditEntry(itemText, c, getArguments().getInt("index"));
+                listener.onSaveEditEntry(itemText, c, spSelect, getArguments().getInt("index"));
                 dismiss();
             }
         }

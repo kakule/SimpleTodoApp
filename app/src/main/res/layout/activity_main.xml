@@ -3,33 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fontFamily="sans-serif-thin"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="com.codepath.simpletodo.MainActivity">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Add Item"
-        android:onClick="onAddItem"
-        android:id="@+id/btnAddItem"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/etNewItem"
-        android:layout_alignBottom="@+id/btnAddItem"
-        android:layout_toEndOf="@+id/spinner"
-        android:layout_toRightOf="@+id/spinner"
-        android:layout_toLeftOf="@+id/btnDate"
-        android:layout_toStartOf="@+id/btnDate"
-        android:inputType="text"
-        android:hint="Enter a new item" />
+    tools:context="com.codepath.simpletodo.MainActivity"
+    android:background="@android:color/white">
 
     <ListView
         android:layout_width="wrap_content"
@@ -37,73 +17,42 @@
         android:id="@+id/lvItems"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_above="@+id/btnAddItem"
-        android:layout_below="@+id/mainheader" />
+        android:layout_below="@+id/mainheader"
+        android:background="@android:color/white" />
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:gravity="center"
         android:id="@+id/mainheader">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            style="?android:listSeparatorTextViewStyle"
-            android:text="Task"
+            android:text="Tasks"
             android:padding="10dp"
             android:textSize="30sp"
             android:id="@+id/textView"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_toStartOf="@+id/tvdateView"
-            android:layout_toLeftOf="@+id/tvdateView"
             android:textColor="#264fd7" />
-        <TextView
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            style="?android:listSeparatorTextViewStyle"
-            android:text="Complete by"
-            android:padding="16dp"
+            style="?android:listViewStyle"
+            android:drawableLeft="@drawable/add_entry_image"
+            android:text="Add New"
             android:textSize="20sp"
-            android:id="@+id/tvdateView"
+            android:id="@+id/imAdd"
+            android:textColor="#264fd7"
+            android:onClick="onAddItem"
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:layout_alignParentEnd="true"
-            android:layout_alignBottom="@+id/textView"
-            android:textColor="#264fd7" />
+            android:background="@android:color/white"
+            android:layout_alignBottom="@+id/textView" />
     </RelativeLayout>
-    <Spinner
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/spinner"
-        android:layout_alignBottom="@+id/btnAddItem"
-        android:layout_alignTop="@+id/etNewItem"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:spinnerMode="dropdown"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:text="Add Priority"
-        android:entries="@array/priorities"/>
 
-    <Button
-    android:id="@+id/btnTime"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:layout_alignBottom="@+id/btnAddItem"
-    android:layout_alignTop="@+id/etNewItem"
-    android:layout_toLeftOf="@+id/btnAddItem"
-    android:layout_toStartOf="@+id/btnAddItem"
-    android:text="Time" />
-
-    <Button
-        android:id="@+id/btnDate"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/btnAddItem"
-        android:layout_alignTop="@+id/etNewItem"
-        android:layout_toLeftOf="@+id/btnTime"
-        android:layout_toStartOf="@+id/btnTime"
-        android:text="Day" />
 </RelativeLayout>

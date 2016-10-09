@@ -5,6 +5,13 @@
     <string name="low_priority">LOW</string>
     <string name="medium_priority">MEDIUM</string>
     <string name="high_priority">HIGH</string>
+    <string name="new_hint">Enter a new item</string>
+    <string name="add_item">Add item below:</string>
+    <string name="edit_item">Edit item below:</string>
+    <string name="add_date">Add date</string>
+    <string name="add_time">Add time</string>
+    <string name="edit_date">Edit date</string>
+    <string name="edit_time">Edit time</string>
     <string-array name="priorities">
         <item>@string/low_priority</item>
         <item>@string/medium_priority</item>
