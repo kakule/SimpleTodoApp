@@ -4,7 +4,7 @@
 
 Submitted by: **Sinkari Kassim**
 
-Time spent: **24** hours spent in total
+Time spent: **28** hours spent in total
 
 ## User Stories
 
