@@ -84,7 +84,6 @@ public class EditEntryDialogFragment extends DialogFragment {
             etFragEditText.setHint(R.string.new_hint);
             btnFragDate.setText(R.string.add_date);
             btnFragTime.setText(R.string.add_time);
-            btnFragTime.setEnabled(false);
         } else {
             tvFragHead.setText(R.string.edit_item);
             etFragEditText.setText(initText);
@@ -92,6 +91,7 @@ public class EditEntryDialogFragment extends DialogFragment {
             btnFragTime.setText(R.string.edit_time);
         }
         etFragEditText.setSelection(initText.length());
+        btnFragTime.setEnabled(false);
         etFragEditText.setOnFocusChangeListener(focusListener);
         btnFragDate.setOnClickListener(dateOnclickListener);
         btnFragTime.setOnClickListener(timeOnclickListener);
@@ -160,7 +160,6 @@ public class EditEntryDialogFragment extends DialogFragment {
         @Override
         public void onTimeSet (TimePicker view, int hour, int minute) {
             // store the values selected into a Calendar instance
-            c = Calendar.getInstance();
             c.set(Calendar.HOUR_OF_DAY, hour);
             c.set(Calendar.MINUTE, minute);
             SimpleDateFormat dateFormat = new SimpleDateFormat("hh:mm a");
